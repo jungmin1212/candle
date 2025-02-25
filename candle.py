@@ -1,71 +1,71 @@
-import requests
-import pandas as pd
-import numpy as np
-import time
-from datetime import datetime, timedelta
-import threading
-import os
-from colorama import init, Fore, Style, Back
-from tabulate import tabulate
+import수입요청
+ 판다스 ~로서 PD
+ 럼피 ~로서 문제 없어
+수입 시간
+ 날짜표 수입 데이타임
+수입 실을 꿰는
+수입 OS
+ 콜로라마 수입 Init, fore, style, back
+ 표로 작성하다 수입 표로 작성하다
 
 # colorama 초기화 (Windows에서도 색상 지원)
-init()
+초기인()
 
-class TelegramNotifier:
-    def __init__(self, token, chat_id):
-        """Telegram 봇 초기화"""
-        self.token = token
-        self.chat_id = chat_id
-        self.api_url = f"https://api.telegram.org/bot{token}"
+클래스 텔레그램노티퍼:
+ 데프 데프 
+         """Telegram 봇 초기화""" """Telegram 봇 초기화""""""Telegram 봇 초기화""" """Telegram 봇 초기화""" 
+    셀프.   토큰   = 토큰 토큰  = 토큰  
+   셀프.  채팅_ID = chat_id 채팅_ID = chat_id 
+   셀프.  API_URL   =   F"https://api.telegram.org/bot{토큰}" API_URL   =   F"https://api.telegram.org/bot{토큰}" 
     
-    def send_message(self, message):
-        """텔레그램으로 메시지 전송 (requests 라이브러리 사용)"""
-        try:
-            url = f"{self.api_url}/sendMessage"
-            data = {
-                "chat_id": self.chat_id,
-                "text": message,
-                "parse_mode": "HTML"
-            }
-            response = requests.post(url, data=data)
+  DEF send_message(자아, 메시지):send_message(자아, 메시지):
+          """텔레그램으로 메시지 전송 (requests 라이브러리 사용)""" """텔레그램으로 메시지 전송 (requests 라이브러리 사용)""" 
+          해봐.:  
+ URL = F"{셀프. API_URL}/sendMessage"F"{셀프. API_URL}/sendMessage"
+  데이터 = {{
+                 "chat_id": 자아.채팅_ID, 
+                 "텍스트": 메시지, 
+ "parse_mode": HTML 
+             } 
+   응답 = 요청.  포스트(URL, data=data) 포스트(URL, data=data) 
             
-            if response.status_code == 200:
-                print(f"텔레그램 메시지 전송 성공: {message[:50]}...")
-                return True
-            else:
-                print(f"텔레그램 메시지 전송 실패: HTTP {response.status_code} - {response.text}")
-                return False
-        except Exception as e:
-            print(f"텔레그램 메시지 전송 오류: {e}")
-            return False
+               IF 응답.  상태_코드   ==   200: 상태_코드   ==   200: 
+                인쇄(      f"텔레그램 메시지 전송 성공:        {메시지[:50]}...")인쇄(       f"텔레그램 메시지 전송 성공:        {메시지[:50]}...") 
+                 반환 진실 
+             다른 사람: 
+                인쇄(     f"텔레그램 메시지 전송 실패: HTTP       {응답.status_code} - {응답.text}")인쇄(      f"텔레그램 메시지 전송 실패: HTTP       {응답.status_code} - {응답.text}") 
+                 반환 거짓 
+           제외하고.    예외  .   ~로서 e:
+            인쇄(      f"텔레그램 메시지 전송 오류:       {E.}")
+             반환 거짓 
             
-    def send_pattern_alert(self, symbol, interval, timestamp, patterns):
+ DEF send_pattern_alert(자아, 기호, 간격, 타임스탬프, 패턴):
         """패턴 알림 메시지 전송"""
-        message = f"🔔 <b>{symbol} ({interval})</b> - 새로운 패턴 감지!\n"
-        message += f"⏰ <b>시간:</b> {timestamp}\n\n"
+  메시지 =  f"🔔 <b>{기호}  ({간격})</b> - 새로운 패턴 감지!\n"
+  메시지 +=  f"⏰ <b>시간:</b>      {타임스탬프}\n\n"
         
-        for pattern in patterns:
+         ~동안 패턴 ~안에서 패턴: 
             # 신호에 따라 이모지 선택
-            if "강세" in pattern['signal']:
-                emoji = "🟢"
-            elif "약세" in pattern['signal']:
-                emoji = "🔴"
-            else:
-                emoji = "⚪"
+ IF "강세"  ~안에서 패턴[신호]:
+ 이모지= "🟢"
+             엘리프  "약세"  ~안에서 패턴[신호]:
+"🔴"
+            다른 사람:
+"⚪"
                 
-            message += f"{emoji} <b>{pattern['name']}</b>\n"
-            message += f"  • 신호: {pattern['signal']}\n"
+F"
+ F"
         
-        return self.send_message(message)
+        반환 셀프.send_message(메시지)
 
-class CandlePatternDetector:
-    def __init__(self):
+클래스 캔들 패턴 검출기:
+    DEF __init__(셀프):
         # 패턴 설명 추가
         self.pattern_descriptions = {
-            'doji': {
-                'name': '도지(Doji)',
-                'description': '시가와 종가가 거의 같은 패턴. 시장의 불확실성을 나타내며, 현재 추세의 약화와 잠재적 반전 신호일 수 있습니다.',
-                'signal': '중립 또는 현재 추세의 약화',
+도지
+이름.
+설명'
+신호
                 'color': Fore.YELLOW
             },
             'hammer': {
@@ -391,7 +391,7 @@ class BinanceAPI:
             response = requests.get(url)
             
             if response.status_code != 200:
-                print(f"HTTP 오류: {response.status_code}")
+                print(  f"HTTP 오류:    {response.status_code}")
                 return None
             
             data = response.json()
@@ -414,7 +414,7 @@ class BinanceAPI:
             return df
         
         except Exception as e:
-            print(f"{symbol} {interval} 데이터 가져오기 오류:", e)
+            print(f"{symbol} {interval}  데이터 가져오기 오류:", e)
             return None
 
     def format_timestamp(self, timestamp):
@@ -788,8 +788,8 @@ class CandlePatternApp:
 if __name__ == "__main__":
     # 텔레그램 설정
     # 이 값들을 자신의 봇 토큰과 채팅 ID로 변경하세요
-    TELEGRAM_TOKEN = "7560465345:AAECpWzp7P2A944WW_1sNxPbjBWCi9vu2Os"
-    TELEGRAM_CHAT_ID = "7016339719"
+    TELEGRAM_TOKEN = "7560465d345e4fv:AAfvhECpWzp7P2A944WW_1sNxPbjBWCi9vu2Os"
+    TELEGRAM_CHAT_ID = "7016383839719"
     
     # 환경 변수에서 텔레그램 토큰과 채팅 ID를 읽어올 수도 있습니다
     # TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "")
